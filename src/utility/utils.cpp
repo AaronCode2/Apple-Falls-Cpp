@@ -15,60 +15,162 @@ Color const Utils::testColor = {255, 0, 0, 100};
 float Utils::deltaTimeIt = 0.0f;
 bool Utils::hackerMode = false;
 
-#if DEBUG_ENABLED
+std::map<TileType, Vector2> Utils::tileFrameMap;
 
-    float Utils::xdebugingvalue = 3.5f;
-    float Utils::ydebugingvalue = 3.5f;
+void Utils::mapTileFrames(){
+    
+    Utils::tileFrameMap[TileType::LEFT_UP_FULL_CORNER] = {0, 0};
+    Utils::tileFrameMap[TileType::MIDLLE_UPPER_FULL_CORNER] = {1, 0};
+    Utils::tileFrameMap[TileType::RIGHT_UP_FULL_CORNER] = {2, 0};
+    Utils::tileFrameMap[TileType::LEFT_FULL_MIDDLE_SIDE] = {0, 1};
+    Utils::tileFrameMap[TileType::FULL_HOLLOW_MIDDLE] = {1, 1};
+    Utils::tileFrameMap[TileType::RIGHT_FULL_SIDE] = {2, 1};
+    Utils::tileFrameMap[TileType::LEFT_DOWN_FULL_CORNER] = {0, 2};
+    Utils::tileFrameMap[TileType::DOWN_FULL_SIDE] = {1, 2};
+    Utils::tileFrameMap[TileType::RIGHT_DOWN_FULL_CORNER] = {2, 2};
 
-    void Utils::TheDebugFunc() {
+    Utils::tileFrameMap[TileType::SINGLE_FULL] = {0, 3};
+    Utils::tileFrameMap[TileType::SINGLE_CORNER_LEFT] = {1, 3};
+    Utils::tileFrameMap[TileType::SINGLE_MIDDLE] = {2, 3};
+    Utils::tileFrameMap[TileType::SINGLE_CORNER_RIGHT] = {3, 3};
 
-        if(!IsKeyDown(KEY_LEFT_SHIFT)) {
+    Utils::tileFrameMap[TileType::PLATFORM_LEFT] = {6, 0}; 
+    Utils::tileFrameMap[TileType::PLATFORM_MIDDLE] = {7, 0};
+    Utils::tileFrameMap[TileType::PLATFORM_RIGHT] = {8, 0};
 
-            if(IsKeyPressed(KEY_O)) {
+    Utils::tileFrameMap[TileType::SINGLE_PLATFORM] = {8, 3};
+    Utils::tileFrameMap[TileType::SINGLE_LEFT_PLATFORM] = {8, 5};
+    Utils::tileFrameMap[TileType::SINGLE_RIGHT_PLATFORM] = {8, 4};
 
-                xdebugingvalue += 0.02;
-                print("X: " + std::to_string(xdebugingvalue));
-            } else if(IsKeyPressed(KEY_L)) {
+    Utils::tileFrameMap[TileType::WATER_PLAT_1] = {9, 0};
+    Utils::tileFrameMap[TileType::WATER_PLAT_2] = {9, 1};
+    Utils::tileFrameMap[TileType::WATER_PLAT_3] = {9, 2};
+    Utils::tileFrameMap[TileType::WATER_PLAT_4] = {9, 3};
+    Utils::tileFrameMap[TileType::WATER_PLAT_5] = {9, 4};
+    Utils::tileFrameMap[TileType::WATER_PLAT_6] = {9, 5};
 
-                xdebugingvalue -= 0.02;
-                print("X: " + std::to_string(xdebugingvalue));
-            } else if(IsKeyPressed(KEY_K)) {
+    Utils::tileFrameMap[TileType::SIGN_FORWARD] = {0, 0};
+    Utils::tileFrameMap[TileType::SIGN_BACKWARD] = {1, 0};
+    Utils::tileFrameMap[TileType::SIGN_UP_FORWARD] = {2, 0};
+    Utils::tileFrameMap[TileType::SIGN_UP_BACKWARD] = {3, 0};
+    Utils::tileFrameMap[TileType::SIGN_DOWN_FORWARD] = {4, 0};
+    Utils::tileFrameMap[TileType::SIGN_DOWN_BACKWARD] = {5, 0};
+    Utils::tileFrameMap[TileType::SIGN_X] = {6, 0};
+    Utils::tileFrameMap[TileType::SIGN_EXCLAMATORY] = {7, 0};
 
-                ydebugingvalue += 0.02;
-                print("Y: " + std::to_string(ydebugingvalue));
-            } else if(IsKeyPressed(KEY_J)) {
+    Utils::tileFrameMap[TileType::TREE_SMALL] = {0, 0};
+    Utils::tileFrameMap[TileType::TREE_MED] = {1, 0};
+    Utils::tileFrameMap[TileType::TREE_LARGE] = {2, 0};
 
-                ydebugingvalue -= 0.02;
-                print("Y: " + std::to_string(ydebugingvalue));
-            }
-        } else {
+    Utils::tileFrameMap[TileType::WILLOW_TREE_SMALL] = {0, 0};
+    Utils::tileFrameMap[TileType::WILLOW_TREE_MED] = {1, 0};
+    Utils::tileFrameMap[TileType::WILLOW_TREE_LARGE] = {2, 0};
 
+    Utils::tileFrameMap[TileType::GRASS_1] = {0, 0};
+    Utils::tileFrameMap[TileType::GRASS_2] = {1, 0};
+    Utils::tileFrameMap[TileType::GRASS_3] = {2, 0};
+    Utils::tileFrameMap[TileType::GRASS_4] = {3, 0};
+    Utils::tileFrameMap[TileType::GRASS_5] = {4, 0};
+    Utils::tileFrameMap[TileType::GRASS_6] = {5, 0};
+    Utils::tileFrameMap[TileType::GRASS_7] = {6, 0};
+    Utils::tileFrameMap[TileType::GRASS_8] = {7, 0};
+    Utils::tileFrameMap[TileType::GRASS_9] = {8, 0};
+    Utils::tileFrameMap[TileType::GRASS_10] = {9, 0};
+
+    Utils::tileFrameMap[TileType::FLAG_GREEN] = {0, 0};
+    Utils::tileFrameMap[TileType::FLAG_END_BLUE] = {0, 1};
+    Utils::tileFrameMap[TileType::FLAG_END_RED] = {0, 2};
+    Utils::tileFrameMap[TileType::COIN] = {0, 0};
+}
+
+int Utils::getRightTileImage(const TileType type) {
+
+
+    // Since the images are separate, we need to figure out which image to give.
+
+    const int typeIndex = (int) type;
+
+    if(typeIndex > 24 && typeIndex < 33) 
+        return (int) ImageTileType::SIGN;
+    if(typeIndex > 32 && typeIndex < 36)
+        return (int) ImageTileType::TREE;
+    if(typeIndex > 35 && typeIndex < 39)
+        return (int) ImageTileType::WILLOW_TREE;
+    if(typeIndex > 38 && typeIndex < 49)
+        return (int) ImageTileType::GRASS;
             
-            if(IsKeyDown(KEY_O)) {
+    if(typeIndex <= 24)
+        return (int) ImageTileType::TILE;
 
-                xdebugingvalue += 0.5;
-                print("X: " + std::to_string(xdebugingvalue));
-            } else if(IsKeyDown(KEY_L)) {
+    if(typeIndex > 48 && typeIndex < 52)
+        return (int) ImageTileType::FLAG;
+        // self.collidable = False
+        // self.maxAnimationFrames = 4
+        // self.elapsedFrame = 0.0
+        // self.frameduration = 0.3
+        // self.animationFrame = 0
 
-                xdebugingvalue -= 0.5;
-                print("X: " + std::to_string(xdebugingvalue));
-            } else if(IsKeyDown(KEY_K)) {
+        
+        // self.srcRect = pygame.Rect(
+        //     utils.imagesWidth[5] * utils.tileTypeCords[self.type][0],
+        //     utils.imagesHeight[5] * utils.tileTypeCords[self.type][1],
+        //     utils.imagesWidth[5], utils.imagesHeight[5]
+        // )
+    if(typeIndex == 52)
+        return (int) ImageTileType::COIN;
+        // self.collidable = True
+        // self.maxAnimationFrames = 4
+        // self.elapsedFrame = 0.0
+        // self.frameduration = 0.15
+        // self.animationFrame = 0
+        
+        
+        // self.srcRect = pygame.Rect(
+        //     utils.imagesWidth[6] * utils.tileTypeCords[self.type][0],
+        //     utils.imagesHeight[6] * utils.tileTypeCords[self.type][1],
+        //     utils.imagesWidth[6], utils.imagesHeight[6]
+        // )
 
-                ydebugingvalue += 0.5;
-                print("Y: " + std::to_string(ydebugingvalue));
-            } else if(IsKeyDown(KEY_J)) {
+}
 
-                ydebugingvalue -= 0.5;
-                print("Y: " + std::to_string(ydebugingvalue));
-            }
-        }
-    }
+Vector2 Utils::getRightTileMaxFrames(const TileType type) {
 
-#endif
+    // It random Values, can't be bothered to map it
+
+    const int typeIndex = (int) type;
+
+    if(typeIndex > 24 && typeIndex < 33) 
+        return {8.0f, 1.0f};
+    if(typeIndex > 32 && typeIndex < 36)
+        return {3.0f, 1.0f};
+    if(typeIndex > 35 && typeIndex < 39)
+        return {3.0f, 1.0f};
+    if(typeIndex > 38 && typeIndex < 49)
+        return {10.0f, 1.0f};
+            
+    if(typeIndex <= 24)
+        return {10.0f, 6.0f};
+
+    if(typeIndex > 48 && typeIndex < 52)
+        return {4.0f, 3.0f};
+        // self.collidable = False
+        // self.maxAnimationFrames = 4
+        // self.elapsedFrame = 0.0
+        // self.frameduration = 0.3
+        // self.animationFrame = 0
+
+        
+        // self.srcRect = pygame.Rect(
+        //     utils.imagesWidth[5] * utils.tileTypeCords[self.type][0],
+        //     utils.imagesHeight[5] * utils.tileTypeCords[self.type][1],
+        //     utils.imagesWidth[5], utils.imagesHeight[5]
+        // )
+    if(typeIndex == 52)
+        return {4.0f, 1.0f};
+}
 
 Font Utils::font;
 int Utils::fontSize;
-
 
 void Utils::exitApp(const std::string errorInfo) {
 

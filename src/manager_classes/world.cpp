@@ -2,7 +2,7 @@
 
 World::World() {
 
-
+    tiles.push_back(Tile({100, 100}, TileType::SINGLE_FULL));
 }
 
 void World::updateTiles(const Vector2 cameraMovement) {

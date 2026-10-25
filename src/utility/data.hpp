@@ -13,21 +13,14 @@
 
 using Json = nlohmann::json;
 
-enum class DataMapIndex {
-
-    DEV_MAP = -1,
-    MAP_1 = 0,
-    MAP_2,
-};
-
 class Data {
 
     public:
 
         Data(std::vector<Tile> &tiles, Rectangle &playerObject, Vector2 &worldPos);
 
-        void writeData(DataMapIndex mapIndex);
-        void readData(DataMapIndex mapIndex);
+        void writeData();
+        void readData();
 
     private:
 
@@ -36,6 +29,4 @@ class Data {
         std::vector<Tile> &tiles;
         Rectangle &playerObject;
         Vector2 &worldPos;
-
-        std::map<DataMapIndex, std::string> dataMap;
 };

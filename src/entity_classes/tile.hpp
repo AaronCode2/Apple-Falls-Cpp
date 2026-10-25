@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include "sprite.hpp"
-#include "../utility/assets.hpp"
+#include <math.h>
 #include "../utility/utils.hpp"
 
 class Tile : public Sprite {
@@ -13,15 +13,26 @@ class Tile : public Sprite {
         void update();
         void move(const Vector2 newVelocity);
 
+        bool isColliable() const { return colliable; };
+
         Rectangle getHitBox() const { return hitBox; };
 
         TileType getType() const { return type; };
+
+        static Texture2D image[NUM_OF_TILE_IMAGES];
 
     private:
 
         void draw();
         void updateHitBox();
 
+        void configureTile();
+        void configureHitBoxAdj();
+        void configureSrcAdj();
+
+        bool colliable = true;
+
         TileType type;
         Rectangle hitBox;
+        Rectangle hitBoxAdj = {0, 0, 0, 0};
 };

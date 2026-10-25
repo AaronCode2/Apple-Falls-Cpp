@@ -35,11 +35,9 @@ SOURCE_FILES
     src/entity_classes/player.cpp
     src/entity_classes/tile.cpp
     src/manager_classes/world.cpp
-    src/app.cpp
     src/game.cpp
-    src/utility/assets.cpp
     src/utility/data.cpp
-    src/utility/global_vars.cpp
+    src/utility/assets.cpp
     src/utility/utils.cpp
 )
 

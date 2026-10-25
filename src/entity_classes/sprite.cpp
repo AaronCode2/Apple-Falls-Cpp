@@ -1,13 +1,19 @@
 #include "Sprite.hpp"
 
-Sprite::Sprite(Rectangle object, ImageIndex index) {
+Texture2D Sprite::image;
 
-    this->object = object;
+Sprite::Sprite(Vector2 position, Texture2D image, Vector2 framesMap) {
 
-    srcRect.width = Textures::texture[index].GetFrameSize().x;
-    srcRect.height = Textures::texture[index].GetFrameSize().y;
-    srcRect.y = 0;
-    srcRect.x = 0;
+    this->object.x = position.x;
+    this->object.y = position.y;
+    this->object.width = (float) image.width / framesMap.x;
+    this->object.height = (float) image.height / framesMap.y;
+
+    srcRect = {
+        0, 0,
+        (float) image.width / framesMap.x,
+        (float) image.height / framesMap.y,
+    };
 }
 
 void Sprite::update() {
@@ -15,7 +21,7 @@ void Sprite::update() {
     srcRect.x = srcRect.width * currentFrame;
 
     animate();
-    draw();
+    draw(Sprite::image);
 }
 
 void Sprite::draw(Texture2D image) {

@@ -1,7 +1,6 @@
 #pragma once
 #include "sprite.hpp"
 #include "../utility/utils.hpp"
-#include "../utility/assets.hpp"
 #include "tile.hpp"
 #include <raylib.h>
 #include <vector>
@@ -12,7 +11,7 @@ class Player : public Sprite {
 
     public:
 
-        Player(Rectangle object, std::vector<Tile> &tiles);
+        Player(Vector2 position, std::vector<Tile> &tiles);
 
         void update();
 
@@ -21,6 +20,8 @@ class Player : public Sprite {
 
         Rectangle &getObject_r() { return object; };
         Rectangle getObject() { return object; };
+
+        static Texture2D image;
 
     private:
 

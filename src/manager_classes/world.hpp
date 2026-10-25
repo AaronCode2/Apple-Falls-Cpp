@@ -30,12 +30,13 @@ class World {
         std::vector<Tile> tiles;
 
         const Vector2 tileSize = {
-            Textures::texture[ImageIndex::TILE].GetFrameSize().x,
-            Textures::texture[ImageIndex::TILE].GetFrameSize().y
+
+            (float) Tile::image[0].width / IMAGE_TILE_MAX_FRAMES.x,
+            (float) Tile::image[0].height / IMAGE_TILE_MAX_FRAMES.y
         };
 
         Rectangle tilePlacerRect;
-        TileType pickedTile = TileType::COUCH;
+        TileType pickedTile = TileType::SINGLE_FULL;
         
         bool enableTilePlacer = false;
 

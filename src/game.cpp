@@ -4,7 +4,8 @@ Game::Game() {
 
     SetExitKey(KEY_NULL);
 
-    // data.readData(DataMapIndex::DEV_MAP);
+    Utils::mapTileFrames();
+    data.readData();
 }
 
 Game::~Game() {
@@ -31,34 +32,8 @@ void Game::gameLoop() {
 
 void Game::updateGame() {
 
-    handleFps();
+    DrawFPS(GetScreenHeight() - 40.0f, 40);
 
     world.update(player.getCameraMovement());
     player.update();
-}
-
-void Game::handleFps() {
-
-    if(IsKeyPressed(KEY_P)) {
-        
-        GlobalVar::toggleMaxFPS = !GlobalVar::toggleMaxFPS;
-
-        if(GlobalVar::toggleMaxFPS)
-            SetTargetFPS(0);
-        else
-            SetTargetFPS(60);
-    }
-
-    if(!IsWindowFocused() && !GlobalVar::isWindowInactive) {
-
-        SetTargetFPS(30);
-        GlobalVar::isWindowInactive = true;
-
-    } else if(IsWindowFocused() && GlobalVar::isWindowInactive) {
-
-        SetTargetFPS(60);
-        GlobalVar::isWindowInactive = false;
-    }
-
-    DrawFPS(GetScreenHeight() - 40.0f, 40);
 }

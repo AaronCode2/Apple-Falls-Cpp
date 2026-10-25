@@ -6,23 +6,17 @@ Data::Data(std::vector<Tile> &tiles, Rectangle &playerObject, Vector2 &worldPos)
 
     // Using camelCase for json files, please do not mess it up
 
-    dataMap[DataMapIndex::DEV_MAP] = "devMap";
-    dataMap[DataMapIndex::MAP_1] = "map1";
-    dataMap[DataMapIndex::MAP_2] = "map1";
-
 }
 
-void Data::writeData(DataMapIndex mapIndex) {
+void Data::writeData() {
 
-    const std::string mapName = dataMap[mapIndex];
-
-    data[mapName]["playerPos"] = {
+    data["playerPos"] = {
 
         {"x", std::floorf(playerObject.x)},
         {"y", std::floorf(playerObject.y)}
     };
 
-    data[mapName]["worldPos"] = {
+    data["worldPos"] = {
 
         {"x", std::floorf(worldPos.x)},
         {"y", std::floorf(worldPos.y)}
@@ -32,7 +26,7 @@ void Data::writeData(DataMapIndex mapIndex) {
 
         Rectangle tileObject = tile.getObject();
 
-        data[mapName]["tiles"].push_back(
+        data["tiles"].push_back(
             {
                 {
                     "position", {
@@ -56,28 +50,26 @@ void Data::writeData(DataMapIndex mapIndex) {
     file.close();
 }
 
-void Data::readData(DataMapIndex mapIndex) {
-
-    const std::string mapName = dataMap[mapIndex];
+void Data::readData() {
 
     std::ifstream file(DATA_PATH);
 
     Json data = Json::parse(file);
 
-    playerObject.x = data[mapName]["playerPos"]["x"];
-    playerObject.y = data[mapName]["playerPos"]["y"];
+    playerObject.x = data["playerPos"]["x"];
+    playerObject.y = data["playerPos"]["y"];
 
-    worldPos = {data[mapName]["worldPos"]["x"], data[mapName]["worldPos"]["y"]}; 
+    worldPos = {data["worldPos"]["x"], data["worldPos"]["y"]}; 
 
     // Notch's post are kinda sad, he is getting a bit lost.
 
-    for(Json::iterator it = data[mapName]["tiles"].begin(); it != data[mapName]["tiles"].end(); it++) {
+    for(Json::iterator it = data["tiles"].begin(); it != data["tiles"].end(); it++) {
 
         Json tiledata = *it;
 
         tiles.push_back(
             Tile(
-                {tiledata["position"]["x"], tiledata["position"]["y"]},
+                {tiledata["position"][0], tiledata["position"][1]},
                 tiledata["type"]
             )
         );

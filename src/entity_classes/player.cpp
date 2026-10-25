@@ -1,7 +1,9 @@
 #include "player.hpp"
 
-Player::Player(Rectangle object, std::vector<Tile> &tiles):
-    Sprite(object, ImageIndex::PLAYER), tiles(tiles)     
+Texture2D Player::image;
+
+Player::Player(Vector2 position, std::vector<Tile> &tiles):
+    Sprite(position, Player::image, IMAGE_PLAYER_MAX_FRAMES), tiles(tiles)     
 {
 
     object.width = srcRect.width;
@@ -18,14 +20,13 @@ void Player::update() {
 }
 
 void Player::draw() {
-
     
     handleAnimation();
 
     DrawTextureRec(
-        Textures::texture[ImageIndex::PLAYER].texture,
+        Player::image,
         srcRect, 
-        {object.x, object.y},
+        {std::floorf(object.x), std::floorf(object.y)},
         WHITE
     );
 
@@ -125,9 +126,6 @@ void Player::handleDirection() {
 
 void Player::applyGravity() {
 
-    if(Utils::hackerMode)
-        return;
-
     if(object.y + object.height <= GetScreenHeight() - 100)
         velocity.y += GRAVITY * GetFrameTime();
     else
@@ -152,6 +150,9 @@ void Player::collisionX() {
     updateHitBox();
 
     for(auto &tile : tiles) {
+
+        if(!tile.isColliable())
+            continue;
 
         if(CheckCollisionRecs(hitBox, tile.getHitBox())) {
             
@@ -179,6 +180,9 @@ void Player::collisionY() {
     updateHitBox();
 
     for(auto &tile : tiles) {
+
+        if(!tile.isColliable())
+            continue;
 
         if(CheckCollisionRecs(hitBox, tile.getHitBox())) {
 
