@@ -1,8 +1,4 @@
 #include "App.hpp"
-#if DEBUG_ENABLED
-    #define RAYLIB_NUKLEAR_IMPLEMENTATION
-    #include "raylib-nuklear.h"
-#endif
 
 // I love Programing! Yeah 
 
@@ -32,7 +28,6 @@ void App::setup() {
     UnloadImage(favicon);
 
     AssetsLoader::load();
-    UI::init();
 }
 
 void App::logInfo() {

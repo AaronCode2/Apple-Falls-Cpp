@@ -249,7 +249,7 @@ void Player::moveCameraY() {
     updateHitBox();
 }
 
-// Life got a bit dull, coding is the only happiness I get nower days :(
+// coding is the only happiness I get nower days :(
 
 void Player::updateCamera() {
 

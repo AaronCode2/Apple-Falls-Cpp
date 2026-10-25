@@ -31,6 +31,16 @@ set(
 SOURCE_FILES
 
     src/main.cpp
+    src/entity_classes/sprite.cpp
+    src/entity_classes/player.cpp
+    src/entity_classes/tile.cpp
+    src/manager_classes/world.cpp
+    src/app.cpp
+    src/game.cpp
+    src/utility/assets.cpp
+    src/utility/data.cpp
+    src/utility/global_vars.cpp
+    src/utility/utils.cpp
 )
 
 add_executable(Apple_Falls ${SOURCE_FILES})
