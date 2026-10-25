@@ -1,6 +1,4 @@
-#include "app.hpp"
 
-int main() {
+// Use F5 to debug, general template - MessyGear
 
-    App::launch();
-}
+int main() {}
