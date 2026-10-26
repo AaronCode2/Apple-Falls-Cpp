@@ -17,6 +17,12 @@ Tile::Tile(Vector2 position, TileType type):
 
 void Tile::update() {
 
+    if(
+        Utils::getRightTileImage(type) == (int) ImageTileType::COIN ||
+        Utils::getRightTileImage(type) == (int) ImageTileType::BANNER
+    )
+        animateTile();
+
     draw();
     updateHitBox();
 }
@@ -29,6 +35,18 @@ void Tile::move(const Vector2 newVelocity) {
     object.y += velocity.y * GetFrameTime();
 
     velocity = {0, 0};
+}
+
+void Tile::setFlagCaptured(TileType newType) {
+
+    // This is only for FLAGS / BANNER
+
+    type = newType;
+
+    srcRect.x = srcRect.width * Utils::tileFrameMap[type].x;
+    srcRect.y = srcRect.height * Utils::tileFrameMap[type].y;
+
+    colliable = false;
 }
 
 void Tile::draw() {
@@ -56,10 +74,8 @@ void Tile::configureTile() {
 
     switch((ImageTileType) Utils::getRightTileImage(type)) {
 
-        case ImageTileType::COIN:
         case ImageTileType::WILLOW_TREE:
         case ImageTileType::TREE:
-        case ImageTileType::FLAG:
         case ImageTileType::SIGN:
         case ImageTileType::GRASS:
             colliable = false;
@@ -130,5 +146,32 @@ void Tile::configureSrcAdj() {
         case TileType::PLATFORM_MIDDLE:
             srcRect.height -= 1;
             break;
+        
+        case TileType::SINGLE_RIGHT_PLATFORM:
+            srcRect.height -= 1;
+            srcRect.x -= 1;
+            break;
+
+        case TileType::SINGLE_LEFT_PLATFORM:
+            srcRect.height -= 1;
+            srcRect.x += 1;
+            srcRect.width -= 2;
+            break;
+        
+        case TileType::WILLOW_TREE_SMALL:
+        case TileType::WILLOW_TREE_MED:
+        case TileType::WILLOW_TREE_LARGE:
+
+            srcRect.width -= 1;
+
+        case TileType::SIGN_DOWN_BACKWARD:
+            srcRect.width -= 1;
     }
+}
+
+void Tile::animateTile() {
+
+    animate(Utils::getRightTileMaxFrames(type).x);
+
+    srcRect.x = srcRect.width * currentFrame;
 }

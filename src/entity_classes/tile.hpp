@@ -13,6 +13,8 @@ class Tile : public Sprite {
         void update();
         void move(const Vector2 newVelocity);
 
+        void setFlagCaptured(TileType newType);
+
         bool isColliable() const { return colliable; };
 
         Rectangle getHitBox() const { return hitBox; };
@@ -29,6 +31,8 @@ class Tile : public Sprite {
         void configureTile();
         void configureHitBoxAdj();
         void configureSrcAdj();
+
+        void animateTile();
 
         bool colliable = true;
 

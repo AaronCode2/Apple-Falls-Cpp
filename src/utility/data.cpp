@@ -69,7 +69,7 @@ void Data::readData() {
 
         tiles.push_back(
             Tile(
-                {tiledata["position"][0], tiledata["position"][1]},
+                {tiledata["position"]["x"], tiledata["position"]["y"]},
                 tiledata["type"]
             )
         );

@@ -15,6 +15,8 @@ class Player : public Sprite {
 
         void update();
 
+        int getCoins() const { return coins; };
+
         Vector2 getVelocity() const { return velocity; };
         Vector2 getCameraMovement() const { return cameraMovement; };
 
@@ -49,6 +51,9 @@ class Player : public Sprite {
 
         Rectangle cameraBox;
         Rectangle hitBox;
+        
+        int coins = 0;
+        bool capturedFlag = false;
 
         Vector2 cameraMovement = {0, 0};
 };

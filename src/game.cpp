@@ -10,7 +10,7 @@ Game::Game() {
 
 Game::~Game() {
 
-    // data.writeData(DataMapIndex::DEV_MAP);
+    // data.writeData();
 }
 
 
@@ -32,8 +32,11 @@ void Game::gameLoop() {
 
 void Game::updateGame() {
 
+    DrawText(Utils::toString(dipper.getCoins() + mabel.getCoins()).c_str(), 100, 100, 20, GREEN);
+
     DrawFPS(GetScreenHeight() - 40.0f, 40);
 
-    world.update(player.getCameraMovement());
-    player.update();
+    world.update(dipper.getCameraMovement());
+    dipper.update();
+    mabel.update(dipper.getCameraMovement());
 }

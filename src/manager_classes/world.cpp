@@ -1,8 +1,6 @@
 #include "world.hpp"
 
 World::World() {
-
-    tiles.push_back(Tile({100, 100}, TileType::SINGLE_FULL));
 }
 
 void World::updateTiles(const Vector2 cameraMovement) {
@@ -83,6 +81,15 @@ void World::dev_tilePlacer() {
 
             if(CheckCollisionPointRec(GetMousePosition(), it->getObject())) {
                 it = tiles.erase(it);
+                return;
+            }
+        }
+    } else if(IsMouseButtonDown(MOUSE_BUTTON_MIDDLE)) {
+
+        for(auto &tile : tiles) {
+
+            if(CheckCollisionPointRec(GetMousePosition(), tile.getObject())) {
+                pickedTile = tile.getType();
                 return;
             }
         }

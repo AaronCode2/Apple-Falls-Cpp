@@ -37,15 +37,11 @@ void Player::move() {
     updateCamera();
 
     object.x += velocity.x * GetFrameTime();
-
-    if(!Utils::hackerMode)
-        collisionX();
+    collisionX();
     moveCameraX();
 
     object.y += velocity.y  * GetFrameTime();
-
-    if(!Utils::hackerMode)
-        collisionY();
+    collisionY();
     moveCameraY();
 }
 
@@ -93,22 +89,26 @@ void Player::addressInput() {
     cameraMovement = {0, 0};
     velocity.x = 0;
 
-    if(Utils::hackerMode)
-        velocity.y = 0;
-
-    if(getInput().goingLeft)
+    if(getInputDipper().goingLeft)
         velocity.x = -PLAYER_SPEED;
-    if(getInput().goingRight)
+    if(getInputDipper().goingRight)
         velocity.x = PLAYER_SPEED;
 
-    if(getInput().isJumping && !Utils::hackerMode)
+    bool isOnGround = false;
+
+    for(auto &tile : tiles) {
+
+        if(not CheckCollisionRecs(object, tile.getHitBox()) or !tile.isColliable())
+            continue;
+        else {
+
+            isOnGround = true;
+            break;
+        }
+    }
+
+    if(getInputDipper().isJumping && isOnGround)
         velocity.y = PLAYER_JUMP_SPEED;
-
-    if(IsKeyDown(KEY_W) && Utils::hackerMode)
-        velocity.y = -PLAYER_SPEED;
-
-    if(IsKeyDown(KEY_S) && Utils::hackerMode)
-        velocity.y = PLAYER_SPEED;
 }
 
 void Player::handleDirection() {
@@ -149,25 +149,43 @@ void Player::collisionX() {
 
     updateHitBox();
 
-    for(auto &tile : tiles) {
+    for(auto it = tiles.begin(); it != tiles.end(); it++) {
 
-        if(!tile.isColliable())
+
+
+        if(!it->isColliable())
             continue;
 
-        if(CheckCollisionRecs(hitBox, tile.getHitBox())) {
-            
+
+
+        if(CheckCollisionRecs(hitBox, it->getHitBox())) {
+
+            if(it->getType() == TileType::FLAG_GREEN && capturedFlag == false) {
+
+                it->setFlagCaptured(TileType::FLAG_END_BLUE);
+                continue;
+            }
+
+            if(it->getType() == TileType::COIN) {
+
+                coins++;
+
+                it = tiles.erase(it);
+                continue;
+            }
+
             if(velocity.x > 0) {
                 
                 const float offset = hitBox.x - object.x + hitBox.width;
                 
-                object.x = tile.getHitBox().x - offset - COL_ADJUST;
+                object.x = it->getHitBox().x - offset - COL_ADJUST;
             }
             
             if(velocity.x < 0) {
                 
                 const float offset = hitBox.x - object.x;
                 
-                object.x = tile.getHitBox().x + tile.getHitBox().width - offset + COL_ADJUST;
+                object.x = it->getHitBox().x + it->getHitBox().width - offset + COL_ADJUST;
             }
 
             velocity.x = 0;
@@ -179,12 +197,25 @@ void Player::collisionY() {
 
     updateHitBox();
 
-    for(auto &tile : tiles) {
+    for(auto it = tiles.begin(); it != tiles.end(); it++) {
 
-        if(!tile.isColliable())
+        if(!it->isColliable())
             continue;
 
-        if(CheckCollisionRecs(hitBox, tile.getHitBox())) {
+        if(CheckCollisionRecs(hitBox, it->getHitBox())) {
+
+            if(it->getType() == TileType::FLAG_GREEN && capturedFlag == false) {
+
+                it->setFlagCaptured(TileType::FLAG_END_BLUE);
+                continue;
+            }
+
+            if(it->getType() == TileType::COIN) {
+
+                coins++;
+                it = tiles.erase(it);
+                continue;
+            }
 
             if(velocity.y > 0) {
                 
@@ -192,7 +223,7 @@ void Player::collisionY() {
                 
                 const float offset = hitBox.y - object.y + hitBox.height;
                 
-                object.y = tile.getHitBox().y - offset - COL_ADJUST;
+                object.y = it->getHitBox().y - offset - COL_ADJUST;
             }
 
             if(velocity.y < 0) {
@@ -201,7 +232,7 @@ void Player::collisionY() {
 
                 const float offset = hitBox.y - object.y;
 
-                object.y = tile.getHitBox().y + tile.getHitBox().height - offset + COL_ADJUST;
+                object.y = it->getHitBox().y + it->getHitBox().height - offset + COL_ADJUST;
             }
         }
     }

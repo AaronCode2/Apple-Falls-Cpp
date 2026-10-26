@@ -1,12 +1,22 @@
 #include "Utils.hpp"
 
-Input getInput() {
+Input getInputDipper() {
 
     return {
 
-        (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)),
-        (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)),
-        (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_SPACE))
+        (IsKeyDown(KEY_A)),
+        (IsKeyDown(KEY_D)),
+        (IsKeyPressed(KEY_W))
+    };
+}
+
+Input getInputMabel() {
+
+    return {
+
+        (IsKeyDown(KEY_LEFT)),
+        (IsKeyDown(KEY_RIGHT)),
+        (IsKeyPressed(KEY_UP))
     };
 }
 
@@ -18,7 +28,7 @@ bool Utils::hackerMode = false;
 std::map<TileType, Vector2> Utils::tileFrameMap;
 
 void Utils::mapTileFrames(){
-    
+
     Utils::tileFrameMap[TileType::LEFT_UP_FULL_CORNER] = {0, 0};
     Utils::tileFrameMap[TileType::MIDLLE_UPPER_FULL_CORNER] = {1, 0};
     Utils::tileFrameMap[TileType::RIGHT_UP_FULL_CORNER] = {2, 0};
@@ -83,6 +93,21 @@ void Utils::mapTileFrames(){
     Utils::tileFrameMap[TileType::COIN] = {0, 0};
 }
 
+std::string Utils::toString(int num) {
+
+
+#if defined(__GNUC__) || defined(__clang__)
+
+    return std::to_string(num);
+
+#else
+
+    return to_string(num);
+
+#endif
+
+}
+
 int Utils::getRightTileImage(const TileType type) {
 
 
@@ -103,7 +128,7 @@ int Utils::getRightTileImage(const TileType type) {
         return (int) ImageTileType::TILE;
 
     if(typeIndex > 48 && typeIndex < 52)
-        return (int) ImageTileType::FLAG;
+        return (int) ImageTileType::BANNER;
         // self.collidable = False
         // self.maxAnimationFrames = 4
         // self.elapsedFrame = 0.0

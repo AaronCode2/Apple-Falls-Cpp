@@ -6,6 +6,7 @@
 #include "utility/assets.hpp"
 #include "entity_classes/sprite.hpp"
 #include "entity_classes/player.hpp"
+#include "entity_classes/player2.hpp"
 #include "utility/data.hpp"
 #include "manager_classes/world.hpp"
 
@@ -23,9 +24,10 @@ class Game {
         Color backgroundColor = {100, 100, 100, 155};
 
         World world = World();
-        Player player = Player({500, 300}, world.giveTiles());
+        Player dipper = Player({200, 50}, world.giveTiles());
+        Player2 mabel = Player2({24, 30}, world.giveTiles());
 
-        Data data = Data(world.giveTiles(), player.getObject_r(), world.getWorldPos_r());
+        Data data = Data(world.giveTiles(), dipper.getObject_r(), world.getWorldPos_r());
 
         void gameLoop();
         void updateGame();

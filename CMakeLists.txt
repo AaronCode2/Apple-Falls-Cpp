@@ -33,6 +33,7 @@ SOURCE_FILES
     src/main.cpp
     src/entity_classes/sprite.cpp
     src/entity_classes/player.cpp
+    src/entity_classes/player2.cpp
     src/entity_classes/tile.cpp
     src/manager_classes/world.cpp
     src/game.cpp

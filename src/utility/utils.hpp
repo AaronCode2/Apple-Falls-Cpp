@@ -19,9 +19,17 @@
 
 #define STACK_SIZE 255
 
+#define MABEL_RESET_POSITION (Vector2) {300.0f, 42.0f}
+
 // 200 Tiles -> World Size
 
 #define WORLD_SIZE 200
+
+enum class PlayerType {
+
+    DIPPER = 0,
+    MABEL = 1
+};
 
 // Some C++ operator magic
 
@@ -86,7 +94,8 @@ struct Input {
     bool isJumping;
 };
 
-Input getInput();
+Input getInputDipper();
+Input getInputMabel();
 
 enum class Dir {
 
@@ -107,7 +116,7 @@ enum class ImageTileType {
     TREE = 2,
     WILLOW_TREE = 3,
     GRASS = 4,
-    FLAG = 5,
+    BANNER = 5,
     COIN = 6
 };
 
@@ -212,6 +221,8 @@ namespace Utils {
 
     void mapTileFrames();
 
+    std::string toString(int num);
+
     int getRightTileImage(const TileType type);
 
     Vector2 getRightTileMaxFrames(const TileType type);
@@ -232,6 +243,9 @@ namespace Mouse {
 #define IMAGE_PLAYER_PATH "../assets/player/dipper.png"
 #define IMAGE_PLAYER_MAX_FRAMES (Vector2) {7, 2}
 
+#define IMAGE_PLAYER2_PATH "../assets/player/mabel.png"
+#define IMAGE_PLAYER2_MAX_FRAMES (Vector2) {6, 2}
+
 #define IMAGE_TILE_MAX_FRAMES (Vector2) {10, 6}
 
 #define PLAYER_IDLE_FRAME_DURATION 0.1f
@@ -240,14 +254,21 @@ namespace Mouse {
 #define PLAYER_WALK_FRAME_DURATION 0.09f
 #define PLAYER_WALK_MAX_FRAMES 6
 
+#define PLAYER2_IDLE_FRAME_DURATION 0.1f
+#define PLAYER2_IDLE_MAX_FRAMES 5
+
+#define PLAYER2_WALK_FRAME_DURATION 0.09f
+#define PLAYER2_WALK_MAX_FRAMES 6
+
 #define PLAYER_SPEED 500
 #define PLAYER_JUMP_SPEED -1000
 #define GRAVITY 1800
 
 #define TILE_WALL_HITBOX_ADJ (Rectangle) {0, 188, 0, -190}
 #define PLAYER_HITBOX_ADJ (Rectangle) {5, 12, -16, -15}
+#define PLAYER2_HITBOX_ADJ (Rectangle) {28, 12, -60, -15}
 #define COL_ADJUST 0.1f
-#define CAMERA_BOX_ADJ (Rectangle) {170, 268, 400, 400}
+#define CAMERA_BOX_ADJ (Rectangle) {570, 268, 1000, 400}
 
 #define NUM_OF_TILE_IMAGES 7 
 
